@@ -14,7 +14,8 @@ class AppointListsService extends Service {
       // console.log(param.apply);
       users = await this.app.mysql.query('SELECT a.uId, c.`realName`, c.`highestDegree`, c.`email`, c.`cellphone`, b.`moduleTitle`, b.`moduleWeek`, b.`taWeekHour`, b.`markerWeekHour`, a.`type` FROM `ta_module_apply_records` a,`ta_module` b, `pf2_accounts_informations` c WHERE a.`status` = "apply" AND a.`modId` = b.`id` AND a.`uId` = c.`id`');
     } else {
-      users = await this.app.mysql.query('SELECT a.uId, c.`realName`, c.`highestDegree`, c.`email`, c.`cellphone`, b.`moduleTitle`, b.`moduleWeek`, b.`taWeekHour`, b.`markerWeekHour`, a.`type` FROM `ta_module_apply_records` a,`ta_module` b, `pf2_accounts_informations` c WHERE (a.`status` = "pass" or a.`status` = "assigned") AND a.`modId` = b.`id` AND a.`uId` = c.`id`');
+      // 忘记当年为什么留了这么一个口子了，实际在 appointlist 的调用中代码只会运行这部分
+      users = await this.app.mysql.query('SELECT a.uId, c.`realName`, c.`highestDegree`, c.`email`, c.`cellphone`, b.`moduleTitle`, b.`moduleWeek`, b.`taWeekHour`, b.`markerWeekHour`, a.`type` FROM `ta_module_apply_records` a,`ta_module` b, `pf2_accounts_informations` c WHERE (a.`status` = "pass" or a.`status` = "assigned") AND a.`modId` = b.`id` AND a.`uId` = c.`id` AND b.`status` = "public"');
     }
     return users;
   }
