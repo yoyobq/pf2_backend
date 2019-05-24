@@ -2,6 +2,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const moment = require('moment');
 
 class AccountsController extends Controller {
 
@@ -37,7 +38,7 @@ class AccountsController extends Controller {
         error: 'NOT FOUND',
         // 在egg官方文档里，detail给了个对象数组[{  }]，个人认为不存在数组的必要
         // 因此把他简化成了一个对象 {}
-        detail: { message: '课程列表不存在', field: '', code: '' },
+        detail: { message: '符合条件的账号列表不存在', field: '', code: '' },
       };
       ctx.status = 404;
     }
@@ -54,10 +55,11 @@ class AccountsController extends Controller {
           permission: ctx.query.permission,
         };
       } else {
-        let timeStr = (new Date()).toLocaleString();
+        // let timeStr = (new Date()).toLocaleString();
         // 获取当前日期
-        timeStr = timeStr.replace(/\//g, '-');
+        // timeStr = timeStr.replace(/\//g, '-');
         // 替换2017/05/03 为    2017-05-03
+        const timeStr = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
         row = {
           id: ctx.params.id,
           lastLoginTime: timeStr,
